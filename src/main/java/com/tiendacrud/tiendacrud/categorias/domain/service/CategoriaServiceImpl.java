@@ -1,5 +1,8 @@
 package com.tiendacrud.tiendacrud.categorias.domain.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.tiendacrud.tiendacrud.categorias.domain.entity.Categoria;
@@ -31,6 +34,13 @@ public class CategoriaServiceImpl implements ICategoriaService {
                 new ResourceNotFoundException("Categoria con el id: " + categoriaId + " no encontrado"));
 
         return CategoriaMapper.mapToCategoriaDto(categoria);
+    }
+
+    @Override
+    public List<CategoriaDto> getAllCategorias() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+        return categorias.stream().map((categoria) -> CategoriaMapper.mapToCategoriaDto(categoria))
+                    .collect(Collectors.toList());
     }
 
 }

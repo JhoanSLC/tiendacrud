@@ -1,5 +1,7 @@
 package com.tiendacrud.tiendacrud.categorias.infrastructure.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/categoria")
-public class EmployeeController {
+public class CategoriaController {
 
     private ICategoriaService categoriaService; 
 
@@ -33,5 +35,12 @@ public class EmployeeController {
     public ResponseEntity<CategoriaDto> getCategoriaById(@PathVariable("id") Long categoriaId){
         CategoriaDto categoriaDto = categoriaService.getCategoriaById(categoriaId);
         return ResponseEntity.ok(categoriaDto);
+    }
+
+    // Build Get All REST API
+    @GetMapping
+    public ResponseEntity<List<CategoriaDto>> getAllCategorias(){
+        List<CategoriaDto> categorias = categoriaService.getAllCategorias();
+        return ResponseEntity.ok(categorias);
     }
 }
