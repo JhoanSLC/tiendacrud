@@ -6,6 +6,7 @@ import com.tiendacrud.tiendacrud.categorias.domain.entity.Categoria;
 import com.tiendacrud.tiendacrud.categorias.domain.entity.CategoriaDto;
 import com.tiendacrud.tiendacrud.categorias.infrastructure.repository.ICategoriaRepository;
 import com.tiendacrud.tiendacrud.categorias.mapper.CategoriaMapper;
+import com.tiendacrud.tiendacrud.excepciones.ResourceNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -21,6 +22,15 @@ public class CategoriaServiceImpl implements ICategoriaService {
         Categoria categoria = CategoriaMapper.mapToCategoria(categoriaDto);
         Categoria savedCategoria = categoriaRepository.save(categoria);
         return CategoriaMapper.mapToCategoriaDto(savedCategoria);
+    }
+
+    @Override
+    public CategoriaDto getCategoriaById(Long categoriaId) {
+        Categoria categoria = categoriaRepository.findById(categoriaId)
+            .orElseThrow(() -> 
+                new ResourceNotFoundException("Categoria con el id: " + categoriaId + " no encontrado"));
+
+        return CategoriaMapper.mapToCategoriaDto(categoria);
     }
 
 }
