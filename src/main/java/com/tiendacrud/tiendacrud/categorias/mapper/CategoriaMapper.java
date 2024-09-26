@@ -18,6 +18,6 @@ public class CategoriaMapper {
             categoriaDto.getId(),
             categoriaDto.getDescripcion(),
             categoriaDto.getEstado()
-        )
+        );
     }
 }
