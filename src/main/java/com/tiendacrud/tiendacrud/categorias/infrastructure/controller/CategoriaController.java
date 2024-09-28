@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +44,20 @@ public class CategoriaController {
     public ResponseEntity<List<CategoriaDto>> getAllCategorias(){
         List<CategoriaDto> categorias = categoriaService.getAllCategorias();
         return ResponseEntity.ok(categorias);
+    }
+
+    // Build Put REST API
+    @PutMapping("{id}")
+    public ResponseEntity<CategoriaDto> updateCategoria(@PathVariable("id") Long categoriaId, 
+                                                        @RequestBody CategoriaDto updatedCategoria){
+        CategoriaDto categoriaDto = categoriaService.updateCategoria(categoriaId, updatedCategoria);
+        return ResponseEntity.ok(categoriaDto);
+    }
+
+    // Build Delete REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteCategoria(@PathVariable("id") Long categoriaId){
+        categoriaService.deleteCategori(categoriaId);
+        return ResponseEntity.ok("¡Categorìa eliminada exitosamente!");
     }
 }

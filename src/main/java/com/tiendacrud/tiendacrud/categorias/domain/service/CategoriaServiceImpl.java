@@ -43,4 +43,27 @@ public class CategoriaServiceImpl implements ICategoriaService {
                     .collect(Collectors.toList());
     }
 
+    @Override
+    public CategoriaDto updateCategoria(Long categoriaId, CategoriaDto updatedCategoria) {
+
+        Categoria categoria = categoriaRepository.findById(categoriaId).orElseThrow(
+            () -> new ResourceNotFoundException("Categorìa con id: "+ categoriaId + " no encontrado")
+        );
+
+        categoria.setDescripcion(updatedCategoria.getDescripcion());
+        categoria.setEstado(updatedCategoria.getEstado());
+
+        Categoria updatedCategoriaObj = categoriaRepository.save(categoria);
+        return CategoriaMapper.mapToCategoriaDto(updatedCategoriaObj);
+    }
+
+    @Override
+    public void deleteCategori(Long categoriaId) {
+        categoriaRepository.findById(categoriaId).orElseThrow(
+            () -> new ResourceNotFoundException("Categorìa con id: "+ categoriaId + " no encontrado")
+        );
+
+        categoriaRepository.deleteById(categoriaId);
+    }
+
 }
