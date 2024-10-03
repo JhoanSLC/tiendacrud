@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { createCategoria } from "../services/CategoriaService";
+import React, { useEffect, useState } from "react";
+import { createCategoria, getCategoria, updateCategoria } from "../services/CategoriaService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CategoriaComponent = () => {
@@ -15,6 +15,17 @@ const CategoriaComponent = () => {
 
   const navigator = useNavigate();
 
+  useEffect(() => {
+    if (id) {
+      getCategoria(id).then((response) => {
+        setDescripcion(response.data.descripcion);
+        setEstado(response.data.estado);
+      }).catch(error => {
+        console.error(error);
+      })
+    }
+  }, [id])
+
   const handleDescripcion = (e) => {
     setDescripcion(e.target.value);
   };
@@ -23,17 +34,29 @@ const CategoriaComponent = () => {
     setEstado(e.target.value);
   };
 
-  const saveCategoria = (e) => {
+  const saveOrUpdateCategoria = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
+
       const categoria = { descripcion, estado };
       console.log(categoria);
 
-      createCategoria(categoria).then((response) => {
-        console.log(response.data);
-        navigator("/categorias");
-      });
+      if (id) {
+        updateCategoria(id, categoria).then((response) => {
+          console.log(response.data);
+          navigator('/categorias');
+        }).catch(error => {
+          console.error(error);
+        })
+      } else {
+        createCategoria(categoria).then((response) => {
+          console.log(response.data);
+          navigator("/categorias");
+        }).catch(error => {
+          console.error(error);
+        })
+      }
     }
 
 
@@ -104,7 +127,7 @@ const CategoriaComponent = () => {
                 {errors.estado && <div className="invalid-feedback"> {errors.estado} </div>}
               </div>
 
-              <button className="btn btn-success" onClick={saveCategoria}>
+              <button className="btn btn-success" onClick={saveOrUpdateCategoria}>
                 Enviar
               </button>
             </form>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { listCategoria } from '../services/CategoriaService'
+import { deleteCategoria, listCategoria } from '../services/CategoriaService'
 import { useNavigate } from 'react-router-dom'
 
 const ListCategoriaComponent = () => {
@@ -9,13 +9,16 @@ const ListCategoriaComponent = () => {
 	const navigator = useNavigate();
 
 	useEffect(() => {
+		getAllCategorias();
+	}, [])
+
+	const getAllCategorias = () => {
 		listCategoria().then((response) => {
 			setCategorias(response.data);
 		}).catch(error => {
 			console.error(error);
 		})
-
-	}, [])
+	}
 
 	function addNewCategoria() {
 		navigator('/add-categoria')
@@ -23,6 +26,16 @@ const ListCategoriaComponent = () => {
 
 	function updateCategoria(id) {
 		navigator(`/edit-categoria/${id}`)
+	}
+
+	const removeCategoria = (id) => {
+		console.log(id);
+
+		deleteCategoria(id).then((response) => {
+			getAllCategorias();
+		}).catch(error => {
+			console.error(error);
+		})
 	}
 
 	return (
@@ -45,13 +58,17 @@ const ListCategoriaComponent = () => {
 								<td>{categoria.id}</td>
 								<td>{categoria.descripcion}</td>
 								<td>{categoria.estado}</td>
-								<td><button className="btn btn-info" onClick={() => updateCategoria(categoria.id)}>Editar</button></td>
+								<td>
+									<button className="btn btn-info" onClick={() => updateCategoria(categoria.id)}>Editar</button>
+									<button className="btn btn-danger" onClick={() => removeCategoria(categoria.id)} style={{ marginLeft: "10px" }}> Delete</button>
+								</td>
+
 							</tr>
 						)
 					}
 				</tbody>
 			</table>
-		</div>
+		</div >
 	)
 }
 

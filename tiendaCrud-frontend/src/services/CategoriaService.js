@@ -8,3 +8,6 @@ export const createCategoria = (categoria) => axios.post(REST_API_BASE_URL,categ
 
 export const getCategoria = (categoriaId) => axios.get(REST_API_BASE_URL + '/' + categoriaId);
 
+export const updateCategoria = (categoriaId, categoria) => axios.put(REST_API_BASE_URL + '/' + categoriaId, categoria);
+
+export const deleteCategoria = (categoriaId) => axios.delete(REST_API_BASE_URL + '/' + categoriaId);
